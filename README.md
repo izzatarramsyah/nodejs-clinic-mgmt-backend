@@ -1,8 +1,14 @@
-# Description
-NodeJS Backend for clinic Project 
+# Next JS Simple Project
 
-# Stack
-Node JS
+## Project Name
+Clinic Management
 
-# Feature
-JWT, Express, MongoDB
+## Project Description
+Simple Backend Web Application for clinic management Case Study
+
+## Project Stack
+- Node JS
+- JWT
+- Encryption/Decryption API Request and Response using aes256
+- npm
+

@@ -9,12 +9,18 @@ dotenv.config();
 export const getPatient = async(req, res) => {
     try {
         // const request = JSON.parse(Aes256.decryptUsingAES256(req.body));
-        const request = JSON.parse(req.body);
-        const fullname = request.fullname;
-        patient.find({$or: [{fullname : fullname}]})
+        const request = req.body;
+        const parameter = [];
+        console.log(request)
+        if ( request.param == 'fullname' ) {
+            parameter.push({fullname : request.value});
+        } else if ( request.param == 'bpjsNo' ) {
+            parameter.push({bpjs : request.value});
+        }
+        patient.find({$or: parameter})
         .then(response => {
             res.status(200).json({
-                message : "Successfuly Get Patient",
+                message : "Success",
                 object : response
             });
         });
@@ -25,14 +31,75 @@ export const getPatient = async(req, res) => {
     }
 }
 
+export const getListPatient = async(req, res) => {
+    try {
+        // const request = JSON.parse(Aes256.decryptUsingAES256(req.body));
+        patient.find()
+        .then(response => {
+            res.status(200).json({
+                message : "Success",
+                object : response
+            });
+        });
+    } catch ( error ) {
+        res.status(500).json({
+            message : error.message
+        });
+    }
+}
+
+
 export const savePatient = (req , res) => {
     try {
         // const request = JSON.parse(Aes256.decryptUsingAES256(req.body));
-        const request = JSON.parse(req.body);
+        const request = req.body;
         const data = new patient(request);
         data.save().then(response => {
             res.status(200).json({
-                message : "Registrasi Berhasil",
+                message : "Success",
+                object : response
+            });
+        });
+    } catch ( error ) {
+        res.status(500).json({
+            message : 'Err : ' + error.message
+        });
+    }   
+}
+
+export const deletePatient = (req , res) => {
+    try {
+        // const request = JSON.parse(Aes256.decryptUsingAES256(req.body));
+        const request = req.body;
+        const id = request.id;
+        patient.findByIdAndDelete(id).then(response => {
+            res.status(200).json({
+                message : "Success",
+                object : response
+            });
+        });
+    } catch ( error ) {
+        res.status(500).json({
+            message : 'Err : ' + error.message
+        });
+    }   
+}
+
+export const updatePatient = (req , res) => {
+    try {
+        // const request = JSON.parse(Aes256.decryptUsingAES256(req.body));
+        const request = req.body;
+        const data = new patient(request);
+        patient.updateOne(
+            { _id: request.id },
+            { $set: { fullname: request.fullname,
+                bpjs: request.bpjs,
+                gender: request.gender,
+                birthDate: request.birthDate
+            } },
+        ).then(response => {
+            res.status(200).json({
+                message : "Success",
                 object : response
             });
         });

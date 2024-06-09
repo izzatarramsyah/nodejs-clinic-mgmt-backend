@@ -1,0 +1,47 @@
+import purchaseHistory from '../models/purchaseHistory.js';
+import bcrypt from 'bcrypt'; 
+import jwt from 'jsonwebtoken';
+import dotenv from 'dotenv'
+import { Aes256 } from '../security/aes256.js';
+
+dotenv.config();
+
+export const purchaseMedicine = (req , res) => {
+    try {
+        // const request = JSON.parse(Aes256.decryptUsingAES256(req.body));
+        const request = req.body;
+        const data = new purchaseHistory(request);
+        data.save().then(response => {
+            res.status(200).json({
+                message : "Success",
+                object : response
+            });
+        });
+    } catch ( error ) {
+        res.status(500).json({
+            message : 'Err : ' + error.message
+        });
+    }   
+}
+
+export const history = async(req, res) => {
+    try {
+        const request = JSON.parse(Aes256.decryptUsingAES256(req.body));
+        const reqBody = request.body;
+        const parameter = [];
+        if ( reqBody.param == 'date' ) {
+            parameter.push({ createdAt: { $gte: reqBody.startDate, $lte:  reqBody.endDate }});
+        } 
+        purchaseHistory.find({$or: parameter})
+        .then(response => {
+            res.status(200).json({
+                message : "Success",
+                object : response
+            });
+        });
+    } catch ( error ) {
+        res.status(500).json({
+            message : error.message
+        });
+    }
+}

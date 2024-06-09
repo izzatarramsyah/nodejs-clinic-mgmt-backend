@@ -2,6 +2,9 @@ import user from '../models/user.js';
 import bcrypt from 'bcrypt'; 
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv'
+import doctor from '../models/doctor.js';
+import patient from '../models/patient.js';
+import visitHistory from '../models/visitHistory.js';
 import { Aes256 } from '../security/aes256.js';
 
 dotenv.config();
@@ -27,10 +30,11 @@ export const getUser = async(req, res) => {
 
 export const login = async(req, res) => {
     try {
-        // const request = JSON.parse(Aes256.decryptUsingAES256(req.body));
-        const request = JSON.parse(req.body);
-        const uname = request.username;
-        const password = request.password;
+        const request = JSON.parse(Aes256.decryptUsingAES256(req.body));
+        console.log(request)
+        const reqBody = request.body;
+        const uname = reqBody.username;
+        const password = reqBody.password;
         user.findOne({$or: [{username : uname}]})
         .then(usr => {
             if (usr) {
@@ -43,11 +47,14 @@ export const login = async(req, res) => {
                     if ( result ) {
                         const id = usr._id;
                         const username = usr.username;
-                        const msisdn = usr.msisdn;
-                        const accessToken = jwt.sign({id,username,msisdn}, process.env.ACCESS_TOKEN_SECRET,{
+                        const password = usr.password;
+                        const menuId = usr.menuId;
+                        const email = usr.email;
+                        const role = usr.role;
+                        const accessToken = jwt.sign({id,username,password,menuId,role,email}, process.env.ACCESS_TOKEN_SECRET,{
                             expiresIn : '20s'
                         })
-                        const refreshToken = jwt.sign({id,username,msisdn}, process.env.REFRESH_TOKEN_SECRET,{
+                        const refreshToken = jwt.sign({id,username,password,menuId,role,email}, process.env.REFRESH_TOKEN_SECRET,{
                             expiresIn : '1d'
                         })
                         usr.refresh_token = refreshToken;
@@ -56,10 +63,10 @@ export const login = async(req, res) => {
                             httpOnly : true,
                             maxAge : 24*60*60*1000
                         });
-                            res.status(200).json({
+                        res.status(200).json({
                             responseCode : 200,
                             accessToken : accessToken,
-                            refreshToken : refreshToken
+                            refreshToken : refreshToken,
                         });
                         // user.findByIdAndUpdate(id , usr, 
                         //     function (err, docs) { 
@@ -121,7 +128,7 @@ const updateToken = async (id, refreshToken) => {
 export const register = (req , res) => {
     try {
         // const request = JSON.parse(Aes256.decryptUsingAES256(req.body));
-        const request = JSON.parse(req.body);
+        const request = req.body;
         const reqUser = new user(request);
         const email = reqUser.email;
         const username = email.substring(0, email.indexOf("@"));
@@ -150,7 +157,7 @@ export const register = (req , res) => {
 
 export const logout = (req , res) => {
     try {
-        const request = JSON.parse(req.body);
+        const request = req.body;
         const uname = request.username;
         user.findOne({$or: [{username : uname}]})
         .then(usr => {

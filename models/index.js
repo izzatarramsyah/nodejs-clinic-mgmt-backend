@@ -17,4 +17,4 @@ const db = {};
 db.sequelize = sequelize;
 db.seq = seq;
 
-db.tutorials = require("./tutorial.model.js")(seq, sequelize);
+// db.tutorials = require("./tutorial.model.js")(seq, sequelize);

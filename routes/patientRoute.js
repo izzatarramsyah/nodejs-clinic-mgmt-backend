@@ -10,10 +10,10 @@ import verifyToken from "../middleware/verifyToken.js"
 
 const router = express.Router();
 
-router.post("/getPatient", verifyToken, getPatient);
-router.get("/getListPatient", verifyToken, getListPatient);
-router.post("/savePatient", verifyToken, savePatient);
-router.post("/deletePatient", verifyToken, deletePatient);
-router.post("/updatePatient", verifyToken, updatePatient);
+router.post("/getPatient", getPatient);
+router.get("/getListPatient", getListPatient);
+router.post("/savePatient", savePatient);
+router.post("/deletePatient", deletePatient);
+router.post("/updatePatient", updatePatient);
 
 export default router;

@@ -5,7 +5,7 @@ export default mongoose.model('doctor', {
     nip : String,
     specialization : String,
     status: String,
-    visitingTime : [{
+    schedule : [{
         day : String,
         shift : String
     }],

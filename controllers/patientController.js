@@ -8,10 +8,8 @@ dotenv.config();
 
 export const getPatient = async(req, res) => {
     try {
-        // const request = JSON.parse(Aes256.decryptUsingAES256(req.body));
-        const request = req.body;
+        const request = JSON.parse(Aes256.decryptUsingAES256(req.body));
         const parameter = [];
-        console.log(request)
         if ( request.param == 'fullname' ) {
             parameter.push({fullname : request.value});
         } else if ( request.param == 'bpjsNo' ) {
@@ -33,9 +31,7 @@ export const getPatient = async(req, res) => {
 
 export const getListPatient = async(req, res) => {
     try {
-        // const request = JSON.parse(Aes256.decryptUsingAES256(req.body));
-        patient.find()
-        .then(response => {
+        patient.find().then(response => {
             res.status(200).json({
                 message : "Success",
                 object : response
@@ -51,8 +47,7 @@ export const getListPatient = async(req, res) => {
 
 export const savePatient = (req , res) => {
     try {
-        // const request = JSON.parse(Aes256.decryptUsingAES256(req.body));
-        const request = req.body;
+        const request = JSON.parse(Aes256.decryptUsingAES256(req.body));
         const data = new patient(request);
         data.save().then(response => {
             res.status(200).json({
@@ -69,8 +64,7 @@ export const savePatient = (req , res) => {
 
 export const deletePatient = (req , res) => {
     try {
-        // const request = JSON.parse(Aes256.decryptUsingAES256(req.body));
-        const request = req.body;
+        const request = JSON.parse(Aes256.decryptUsingAES256(req.body));
         const id = request.id;
         patient.findByIdAndDelete(id).then(response => {
             res.status(200).json({
@@ -87,9 +81,7 @@ export const deletePatient = (req , res) => {
 
 export const updatePatient = (req , res) => {
     try {
-        // const request = JSON.parse(Aes256.decryptUsingAES256(req.body));
-        const request = req.body;
-        const data = new patient(request);
+        const request = JSON.parse(Aes256.decryptUsingAES256(req.body));
         patient.updateOne(
             { _id: request.id },
             { $set: { fullname: request.fullname,

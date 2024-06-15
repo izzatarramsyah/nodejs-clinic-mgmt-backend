@@ -8,8 +8,7 @@ dotenv.config();
 
 export const getDoctor = async(req, res) => {
     try {
-        // const request = JSON.parse(Aes256.decryptUsingAES256(req.body));
-        const request = req.body;
+        const request = JSON.parse(Aes256.decryptUsingAES256(req.body));
         const parameter = [];
         if ( request.param == 'fullname' ) {
             parameter.push({fullname : request.value});
@@ -32,8 +31,7 @@ export const getDoctor = async(req, res) => {
 
 export const saveDoctor = (req , res) => {
     try {
-        // const request = JSON.parse(Aes256.decryptUsingAES256(req.body));
-        const request = req.body;
+        const request = JSON.parse(Aes256.decryptUsingAES256(req.body));
         const data = new doctor(request);
         data.save().then(response => {
             res.status(200).json({
@@ -50,7 +48,6 @@ export const saveDoctor = (req , res) => {
 
 export const getListDoctor = async(req, res) => {
     try {
-        // const request = JSON.parse(Aes256.decryptUsingAES256(req.body));
         doctor.find().then(response => {
             res.status(200).json({
                 message : "Success",
@@ -66,8 +63,7 @@ export const getListDoctor = async(req, res) => {
 
 export const deleteDoctor = (req , res) => {
     try {
-        // const request = JSON.parse(Aes256.decryptUsingAES256(req.body));
-        const request = req.body;
+        const request = JSON.parse(Aes256.decryptUsingAES256(req.body));
         const id = request.id;
         doctor.findByIdAndDelete(id).then(response => {
             res.status(200).json({
@@ -84,8 +80,7 @@ export const deleteDoctor = (req , res) => {
 
 export const updateDoctor = (req , res) => {
     try {
-        // const request = JSON.parse(Aes256.decryptUsingAES256(req.body));
-        const request = req.body;
+        const request = JSON.parse(Aes256.decryptUsingAES256(req.body));
         doctor.updateOne(
             { _id: request.id },
             { $set: { name: request.name,

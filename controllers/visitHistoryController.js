@@ -10,8 +10,7 @@ dotenv.config();
 
 export const saveVisitHistory = (req , res) => {
     try {
-        // const request = JSON.parse(Aes256.decryptUsingAES256(req.body));
-        const request = req.body;
+        const request = JSON.parse(Aes256.decryptUsingAES256(req.body));
         const data = new visitHistory(request);
         visitHistory.find({$or: [{doctorName : request.doctorName}]}).sort({ createdAt: -1 })
             .then(response => {
@@ -56,9 +55,7 @@ export const saveVisitHistory = (req , res) => {
 
 export const getListHistory = async(req, res) => {
     try {
-        // const request = JSON.parse(Aes256.decryptUsingAES256(req.body));
-        visitHistory.find()
-        .then(response => {
+        visitHistory.find().then(response => {
             res.status(200).json({
                 message : "Success",
                 object : response
@@ -73,8 +70,7 @@ export const getListHistory = async(req, res) => {
 
 export const getHistory = async(req, res) => {
     try {
-        // const request = JSON.parse(Aes256.decryptUsingAES256(req.body));
-        const request = req.body;
+        const request = JSON.parse(Aes256.decryptUsingAES256(req.body));
         const parameter = [];
         if ( request.param == 'fullname' ) {
             parameter.push({patientName : request.value});
@@ -95,4 +91,71 @@ export const getHistory = async(req, res) => {
             message : error.message
         });
     }
+}
+
+export const getTodayVisit = async(req, res) => {
+    try {
+        const request = JSON.parse(Aes256.decryptUsingAES256(req.body));
+        const today = new Date();
+        const startOfDay = new Date(today.setHours(0, 0, 0, 0));
+        const endOfDay = new Date(today.setHours(23, 59, 59, 999));
+        const parameter = [];
+        parameter.push({doctorName : request.doctorName, status : 'IDLE'});
+        visitHistory.findOne({$or: parameter})
+        .sort({ date: 1 })
+        .then(response => {
+            res.status(200).json({
+                message : "Success",
+                object : response
+            });
+        });
+    } catch ( error ) {
+        res.status(500).json({
+            message : error.message
+        });
+    }
+}
+
+export const getListTodayVisit = async(req, res) => {
+    try {
+        const request = JSON.parse(Aes256.decryptUsingAES256(req.body));
+        const today = new Date();
+        const startOfDay = new Date(today.setHours(0, 0, 0, 0));
+        const endOfDay = new Date(today.setHours(23, 59, 59, 999));
+        const parameter = [];
+        parameter.push({doctorName : request.doctorName});
+        visitHistory.find({$or: parameter})
+        .sort({ date: 1 })
+        .then(response => {
+            res.status(200).json({
+                message : "Success",
+                object : response
+            });
+        });
+    } catch ( error ) {
+        res.status(500).json({
+            message : error.message
+        });
+    }
+}
+
+export const updateVisitHistory = (req , res) => {
+    try {
+        const request = JSON.parse(Aes256.decryptUsingAES256(req.body));
+        visitHistory.updateOne(
+            { _id: request.id },
+            { $set: { complaint: request.complaint,
+                status: request.status
+            } },
+        ).then(response => {
+            res.status(200).json({
+                message : "Success",
+                object : response
+            });
+        });
+    } catch ( error ) {
+        res.status(500).json({
+            message : 'Err : ' + error.message
+        });
+    }   
 }

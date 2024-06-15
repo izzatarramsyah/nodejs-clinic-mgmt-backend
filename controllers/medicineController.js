@@ -8,7 +8,6 @@ dotenv.config();
 
 export const getListMedicine = async(req, res) => {
     try {
-        // const request = JSON.parse(Aes256.decryptUsingAES256(req.body));
         medicine.find().then(response => {
             res.status(200).json({
                 message : "Success",
@@ -24,8 +23,7 @@ export const getListMedicine = async(req, res) => {
 
 export const getMedicine = async(req, res) => {
     try {
-        // const request = JSON.parse(Aes256.decryptUsingAES256(req.body));
-        const request = req.body;
+        const request = JSON.parse(Aes256.decryptUsingAES256(req.body));
         const parameter = [];
         if ( request.param == 'name' ) {
             parameter.push({name : request.value});
@@ -48,8 +46,7 @@ export const getMedicine = async(req, res) => {
 
 export const saveMedicine = (req , res) => {
     try {
-        // const request = JSON.parse(Aes256.decryptUsingAES256(req.body));
-        const request = req.body;
+        const request = JSON.parse(Aes256.decryptUsingAES256(req.body));
         const data = new medicine(request);
         data.save().then(response => {
             res.status(200).json({

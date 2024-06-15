@@ -1,4 +1,6 @@
 import purchaseHistory from '../models/purchaseHistory.js';
+import balance from '../models/balance.js';
+
 import bcrypt from 'bcrypt'; 
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv'
@@ -8,8 +10,7 @@ dotenv.config();
 
 export const purchaseMedicine = (req , res) => {
     try {
-        // const request = JSON.parse(Aes256.decryptUsingAES256(req.body));
-        const request = req.body;
+        const request = JSON.parse(Aes256.decryptUsingAES256(req.body));
         const data = new purchaseHistory(request);
         data.save().then(response => {
             res.status(200).json({
@@ -27,10 +28,9 @@ export const purchaseMedicine = (req , res) => {
 export const history = async(req, res) => {
     try {
         const request = JSON.parse(Aes256.decryptUsingAES256(req.body));
-        const reqBody = request.body;
         const parameter = [];
-        if ( reqBody.param == 'date' ) {
-            parameter.push({ createdAt: { $gte: reqBody.startDate, $lte:  reqBody.endDate }});
+        if ( request.param == 'date' ) {
+            parameter.push({ createdAt: { $gte: request.startDate, $lte:  request.endDate }});
         } 
         purchaseHistory.find({$or: parameter})
         .then(response => {

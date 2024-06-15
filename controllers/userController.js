@@ -11,8 +11,7 @@ dotenv.config();
 
 export const getUser = async(req, res) => {
     try {
-        // const request = JSON.parse(Aes256.decryptUsingAES256(req.body));
-        const request = JSON.parse(req.body);
+        const request = JSON.parse(Aes256.decryptUsingAES256(req.body));
         const uname = request.username;
         user.findOne({$or: [{username : uname}]})
         .then(usr => {
@@ -31,10 +30,8 @@ export const getUser = async(req, res) => {
 export const login = async(req, res) => {
     try {
         const request = JSON.parse(Aes256.decryptUsingAES256(req.body));
-        console.log(request)
-        const reqBody = request.body;
-        const uname = reqBody.username;
-        const password = reqBody.password;
+        const uname = request.username;
+        const password = request.password;
         user.findOne({$or: [{username : uname}]})
         .then(usr => {
             if (usr) {
@@ -127,8 +124,7 @@ const updateToken = async (id, refreshToken) => {
 
 export const register = (req , res) => {
     try {
-        // const request = JSON.parse(Aes256.decryptUsingAES256(req.body));
-        const request = req.body;
+        const request = JSON.parse(Aes256.decryptUsingAES256(req.body));
         const reqUser = new user(request);
         const email = reqUser.email;
         const username = email.substring(0, email.indexOf("@"));
@@ -157,7 +153,7 @@ export const register = (req , res) => {
 
 export const logout = (req , res) => {
     try {
-        const request = req.body;
+        const request = JSON.parse(Aes256.decryptUsingAES256(req.body));
         const uname = request.username;
         user.findOne({$or: [{username : uname}]})
         .then(usr => {

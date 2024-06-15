@@ -8,8 +8,8 @@ import verifyToken from "../middleware/verifyToken.js"
 
 const router = express.Router();
 
-router.post("/saveMedicine", verifyToken, saveMedicine);
-router.post("/getMedicine", verifyToken, getMedicine);
-router.get("/getListMedicine", verifyToken, getListMedicine);
+router.post("/saveMedicine", saveMedicine);
+router.post("/getMedicine", getMedicine);
+router.get("/getListMedicine", getListMedicine);
 
 export default router;

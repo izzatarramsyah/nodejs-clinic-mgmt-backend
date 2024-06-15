@@ -7,7 +7,7 @@ import verifyToken from "../middleware/verifyToken.js"
 
 const router = express.Router();
 
-router.post("/saveInventory", verifyToken, saveInventory);
-router.post("/getInventory", verifyToken, getInventory);
+router.post("/saveInventory", saveInventory);
+router.post("/getInventory", getInventory);
 
 export default router;

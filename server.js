@@ -10,6 +10,6 @@ app.listen(port, () =>
     console.log('app listening port :' + port)
 );
 
-// socketIo.listen(portIO, () => {
-//     console.log(`socket listening port : ${portIO}`);
-// });
+socketIo.listen(portIO, () => {
+    console.log(`socket listening port : ${portIO}`);
+});

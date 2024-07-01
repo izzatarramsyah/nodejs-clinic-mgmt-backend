@@ -28,8 +28,7 @@ export const getListMessage = async(req, res) => {
         const request = JSON.parse(Aes256.decryptUsingAES256(req.body));
         const parameter = [];
         parameter.push({from : request.from, to : request.to});
-        message.find().sort({ date: 1 })
-        .then(response => {
+        message.find().sort({ date: 1 }).then(response => {
             res.status(200).json({
                 message : "Success",
                 object : response

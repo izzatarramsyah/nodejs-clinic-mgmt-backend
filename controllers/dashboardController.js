@@ -32,13 +32,13 @@ export const adminStats = async(req, res) => {
 
 export const patientStats = async(req, res) => {
     try {
-        const request = JSON.parse(Aes256.decryptUsingAES256(req.body));
+        // const request = JSON.parse(Aes256.decryptUsingAES256(req.body));
         const [countBalance, countVisit, countPurchase] = await Promise.all([
-            balance.find({username : request.username}).select('balance -_id'),
-            visitHistory.count({patientName : 'pasien 1'}),
+            balance.find({username : 'pasien'}).select('balance -_id'),
+            visitHistory.count({patientName : 'Alex'}),
             purchaseHistory.aggregate([
-                { $match: { username : request.username } },
-                { $group: { _id: null,  totalPurchase: { $sum: '$totalBuy' }} }
+                { $match: { username : 'pasien' } },
+                { $group: { _id: null,  totalPurchase: { $sum: {$multiply: ["$price", "$quantity"]} }} }
             ])
         ]);
         res.status(200).json({

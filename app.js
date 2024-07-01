@@ -12,7 +12,7 @@ import dashboardRoute from "./routes/dashboardRoute.js";
 import purchaseRoute from "./routes/purchaseRoute.js";
 import medicalRecordRoute from "./routes/medicalRecordRoute.js";
 import messageRoute from "./routes/messageRoute.js";
-
+import queueRoute from "./routes/queueRoute.js";
 import dotenv from 'dotenv'
 import cookieParser from "cookie-parser";
 import bodyParser from "body-parser";
@@ -41,5 +41,6 @@ app.use('/medicine', medicineRoute);
 app.use('/purchase', purchaseRoute);
 app.use('/medicalRecord', medicalRecordRoute);
 app.use('/message', messageRoute);
+app.use('/queue', queueRoute);
 
 export default app;

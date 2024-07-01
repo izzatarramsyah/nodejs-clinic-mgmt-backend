@@ -10,7 +10,7 @@ import refreshToken from "../middleware/refreshToken.js"
 
 const router = express.Router();
 
-router.post("/getUser", verifyToken, getUser);
+router.post("/getUser", getUser);
 router.post("/login", login);
 router.post("/register", register);
 router.get("/getToken", refreshToken); 

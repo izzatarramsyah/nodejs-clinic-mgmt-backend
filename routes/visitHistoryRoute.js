@@ -5,7 +5,8 @@ import {
     getHistory,
     getTodayVisit,
     updateVisitHistory,
-    getListTodayVisit
+    getListTodayVisit,
+    getHistoryByDoctor
 } from "../controllers/visitHistoryController.js";
 import verifyToken from "../middleware/verifyToken.js"
 
@@ -17,5 +18,6 @@ router.post("/getHistory", getHistory);
 router.post("/getTodayVisit", getTodayVisit);
 router.post("/updateVisitHistory", updateVisitHistory);
 router.post("/getListTodayVisit", getListTodayVisit);
+router.post("/getHistoryByDoctor", getHistoryByDoctor);
 
 export default router;

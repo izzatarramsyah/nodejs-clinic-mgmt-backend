@@ -2,9 +2,6 @@ import user from '../models/user.js';
 import bcrypt from 'bcrypt'; 
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv'
-import doctor from '../models/doctor.js';
-import patient from '../models/patient.js';
-import visitHistory from '../models/visitHistory.js';
 import { Aes256 } from '../security/aes256.js';
 
 dotenv.config();
@@ -65,22 +62,6 @@ export const login = async(req, res) => {
                             accessToken : accessToken,
                             refreshToken : refreshToken,
                         });
-                        // user.findByIdAndUpdate(id , usr, 
-                        //     function (err, docs) { 
-                        //     if (err){ 
-                        //         res.status(500).json({
-                        //             message : err.message
-                        //         });
-                        //     } else { 
-                        //         res.cookie('refreshToken' , refreshToken, {
-                        //             httpOnly : true,
-                        //             maxAge : 24*60*60*1000
-                        //         });
-                        //         res.status(200).json({
-                        //             accessToken : accessToken,
-                        //         });
-                        //     } 
-                        // });
                     } else {
                         return res.status(500).json({
                             responseCode : 201,
@@ -167,42 +148,6 @@ export const logout = (req , res) => {
                 });
             }
         });
-        // const refreshToken = req.cookies.refreshToken;
-        // if ( !refreshToken ) {
-        //     res.status(204).json({
-        //         message : "Invalid"
-        //     });
-        // } else {
-        //     user.findOne({$or: [{refresh_token : refreshToken}]})
-        //     .then(usr => {
-        //         if (usr) {
-        //             const id = usr._id;
-        //             // usr.refresh_token = null;
-        //             updateToken(id, null);
-        //             res.clearCookie('refreshToken');
-        //             res.status(200).json({
-        //                 message : "Logout Success"
-        //             });
-        //             // user.findByIdAndUpdate(id , usr, 
-        //             //     function (err, docs) { 
-        //             //     if (err){ 
-        //             //         res.status(500).json({
-        //             //             message : error.message
-        //             //         });
-        //             //     } else { 
-        //             //         res.clearCookie('refreshToken');
-        //             //         res.status(200).json({
-        //             //             message : "Logout Success"
-        //             //         });
-        //             //     } 
-        //             // });
-        //         }else {
-        //             res.status(204).json({
-        //                 message : "Invalid"
-        //             });
-        //         }
-        //     });
-        // }
     } catch ( error ) {
         res.status(500).json({
             message : error.message

@@ -4,7 +4,7 @@ export default mongoose.model('visitHistory', {
     patientName : String,
     bpjsNo : String,
     doctorName : String,
-    specialization : String,
+    poli : String,
     visitingDay : String,
     visitingShift : String,
     complaint : String,

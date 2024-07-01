@@ -6,5 +6,6 @@ export default mongoose.model('patient', {
     birthDate : String,
     nik : String,
     bpjs : String,
-    email: String
+    email: String,
+    phoneNo: String
 }, 'patient');
